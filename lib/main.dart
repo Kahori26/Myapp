@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 Future<void> main() async {
   // runAppが実行される前に、cameraプラグインを初期化
@@ -17,6 +18,22 @@ Future<void> main() async {
 
   runApp(MyApp(camera: firstCamera));
 }
+Future getImageFromCamera() async {
+   final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+   setState(() {
+     _image = File(pickedFile.path);
+   });
+ }
+
+Future getImageFromGallery() async {
+   final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+   setState(() {
+     _image = File(pickedFile.path);
+   });
+ }
+
 
 class MyApp extends StatelessWidget {
   final CameraDescription camera;
