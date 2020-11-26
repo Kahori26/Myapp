@@ -10,15 +10,13 @@ import 'package:flutter/rendering.dart';
 
 import 'package:palette_generator/palette_generator.dart';
 
-void main() => runApp(MyApp());
-
 const Color _kBackgroundColor = Color(0xffa0a0a0);
 const Color _kSelectionRectangleBackground = Color(0x15000000);
 const Color _kSelectionRectangleBorder = Color(0x80000000);
 const Color _kPlaceholderColor = Color(0x80404040);
 
 /// The main Application class.
-class MyApp extends StatelessWidget {
+class Findcolorpage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -29,8 +27,8 @@ class MyApp extends StatelessWidget {
       ),
       home: const ImageColors(
         title: 'Image Colors',
-        image: AssetImage('assets/landscape.png'),
-        imageSize: Size(256.0, 170.0),
+        image: AssetImage('assets/a.jpg'),
+        imageSize: Size(256.0, 250.0),
       ),
     );
   }
