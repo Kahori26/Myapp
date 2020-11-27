@@ -9,29 +9,36 @@ import '../models/pen_model.dart';
 class PaperApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => PenModel(),
-          //builder: (BuildContext context) => PenModel(),
-        ),
-        /*ChangeNotifierProvider(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('ぬりえ'),
+      ),
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => PenModel(),
+            //builder: (BuildContext context) => PenModel(),
+          ),
+          /*ChangeNotifierProvider(
           create: (context) => PenWidthModel(),
           //builder: (BuildContext context) => PenModel(),
         ),*/
-        ChangeNotifierProvider(
-          create: (context) => StrokesModel(),
-          //builder: (BuildContext context) => StrokesModel(),
+          ChangeNotifierProvider(
+            create: (context) => StrokesModel(),
+            //builder: (BuildContext context) => StrokesModel(),
+          ),
+        ],
+        child: MaterialApp(
+          //debugShowCheckedModeBanner: false,
+          home: SafeArea(
+            child: PaperScreen(),
+          ),
+          //home: PaperScreen(),
+
+          routes: <String, WidgetBuilder>{
+            '/SavePaintListPage': (BuildContext context) => new SavePaintPage(),
+          },
         ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: SafeArea(
-          child: PaperScreen(),
-        ),
-        routes: <String, WidgetBuilder>{
-          '/SavePaintList': (BuildContext context) => new SavePaintPage(),
-        },
       ),
     );
   }

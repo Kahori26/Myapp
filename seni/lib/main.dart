@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:seni/paint/screens/paint_main.dart';
 //import 'package:provider/provider.dart';
 //import 'paint/models/pen_model.dart';
-//import 'package:seni/savepaint/savepaintpage.dart';
+import 'package:seni/savepaint/savepaintpage.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,11 +21,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: TopPage(),
+      debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
         '/top': (BuildContext context) => new TopPage(),
         '/Main': (BuildContext context) => new MainPage(),
         '/Paint': (BuildContext context) => new PaperApp(),
-        //'/SavePaintList': (BuildContext context) => new SavePaintPage(),
+        '/SavePaintListPage': (BuildContext context) => new SavePaintPage(),
       },
     );
   }
@@ -170,7 +171,8 @@ class MainPage extends StatelessWidget {
                     color: Colors.deepOrangeAccent, // button color
                     child: InkWell(
                       splashColor: Colors.orange[200], // splash color
-                      //                   onTap:  () => Navigator.of(context).pushNamed("/subpage"),
+                      onTap: () =>
+                          Navigator.of(context).pushNamed("/SavePaintListPage"),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[

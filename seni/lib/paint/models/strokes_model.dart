@@ -5,8 +5,8 @@ import 'package:seni/paint/models/pen_model.dart';
 //import 'package:oekaki/models/pen_width.dart';
 
 class StrokesModel extends ChangeNotifier {
+  //static List<Stroke> _strokes = [];
   List<Stroke> _strokes = [];
-
   get all => _strokes;
 
   void add(PenModel pen, Offset offset) {
