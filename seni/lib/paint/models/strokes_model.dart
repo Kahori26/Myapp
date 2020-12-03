@@ -7,6 +7,7 @@ import 'package:seni/paint/models/pen_model.dart';
 class StrokesModel extends ChangeNotifier {
   //static List<Stroke> _strokes = [];
   List<Stroke> _strokes = [];
+  List<Stroke> _undoneList = [];
   get all => _strokes;
 
   void add(PenModel pen, Offset offset) {
@@ -17,6 +18,29 @@ class StrokesModel extends ChangeNotifier {
   void update(Offset offset) {
     _strokes.last.add(offset);
     notifyListeners();
+  }
+
+  /*
+   * undo可能か
+   */
+  bool canUndo() => _strokes.length > 0;
+  /*
+   * redo可能か
+   */
+  bool canRedo() => _undoneList.length > 0;
+
+  void undo() {
+    if (canUndo()) {
+      _undoneList.add(_strokes.removeLast());
+      notifyListeners();
+    }
+  }
+
+  void redo() {
+    if (canRedo()) {
+      _strokes.add(_undoneList.removeLast());
+      notifyListeners();
+    }
   }
 
   void clear() {

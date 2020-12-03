@@ -3,15 +3,43 @@ import 'package:seni/paint/models/strokes_model.dart';
 import 'package:seni/paint/screens/paper_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:seni/savepaint/savepaintpage.dart';
+import 'package:seni/paint/models/save_paint_model.dart';
 
 import '../models/pen_model.dart';
 
 class PaperApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    //final image = Provider.of<SavePaintModel>(context);
+    //SavePaintModel image;
+    //Image image;
+    //image = null;
     return Scaffold(
       appBar: AppBar(
-        title: Text('ぬりえ'),
+        backgroundColor: Colors.orange[400],
+        centerTitle: true,
+        //leading: Icon(Icons.arrow_back_ios),
+        title: RichText(
+          text: TextSpan(
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 4.0,
+              //fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontFamily: "Pacifico",
+            ),
+            children: [
+              TextSpan(text: '  ぬりえ '),
+              WidgetSpan(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                  child: Icon(Icons.brush_outlined),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       body: MultiProvider(
         providers: [
@@ -27,9 +55,14 @@ class PaperApp extends StatelessWidget {
             create: (context) => StrokesModel(),
             //builder: (BuildContext context) => StrokesModel(),
           ),
+          ChangeNotifierProvider(
+            create: (context) => SavePaintModel(),
+            //builder: (BuildContext context) => StrokesModel(),
+          ),
         ],
         child: MaterialApp(
-          //debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: false,
+
           home: SafeArea(
             child: PaperScreen(),
           ),

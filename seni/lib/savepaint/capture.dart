@@ -3,6 +3,8 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
+//使わないかも
+//
 /*
 class Capture extends StatefulWidget {
   @override

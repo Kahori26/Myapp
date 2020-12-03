@@ -13,7 +13,10 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
-import 'package:seni/savepaint/capture.dart';
+//import 'package:seni/savepaint/capture.dart';
+//import 'package:seni/savepaint/savepaintpage.dart';
+
+import 'package:seni/paint/models/save_paint_model.dart';
 import 'package:seni/savepaint/savepaintpage.dart';
 
 class PaperScreen extends StatefulWidget {
@@ -27,130 +30,186 @@ class _PaperScreenState extends State<PaperScreen> {
   // グローバルキー
   GlobalKey _globalKey = GlobalKey();
   // イメージ
+  //var _image;
   Image _image;
 
   @override
   Widget build(BuildContext context) {
-    final strokes = Provider.of<StrokesModel>(context);
+    var strokes = Provider.of<StrokesModel>(context);
     final Size size = MediaQuery.of(context).size;
-    //routes: <String, WidgetBuilder>{
 
     return Scaffold(
-      //routes: <String, WidgetBuilder>{
-      //},
-      /*appBar: AppBar(
-        centerTitle: true,
-        title: Text("ぬりえ"),
-      ),*/
-
-      body: Stack(
-        children: <Widget>[
-          //Image.asset('images/sample.jpg', fit: BoxFit.contain),
-
-          RepaintBoundary(
-            key: _globalKey,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  color: Colors.white,
-                  width: size.width,
-                  height: size.height,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Image.asset("images/ChristmasBear.png",
-                      fit: BoxFit.contain),
-                ),
-                Paper(),
-              ],
-            ),
-          ),
-          /*/*
-               * キャプチャ表示エリア
-               */
-          Container(
-            color: Colors.yellow,
-            height: 200.0,
-            child: Center(
-              child: _image != null ? _image : Container(),
-            ),
-          ),*/
-          /*
-          Align(
-            alignment: Alignment.center,
-            child: Image.asset("images/ChristmasBear.png", fit: BoxFit.contain),
-          ),
-*/
-          //Paper(),
-
-          Align(
-            alignment: Alignment.topLeft,
-            child: Palette(),
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: SelectWidth(),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              color: Colors.white,
-
-              // materialTapTargetSize: MaterialTapTargetSize(),
-              onPressed: () {
-                // キャプチャ開始
-                _doCapture();
-                Navigator.of(context)
-                    .pushNamed("/SavePaintListPage", arguments: this._image);
-                //SavePaintPage(image: this._image);
-
-                //_navigateToSavePage(context, _image);
-                //Navigator.of(context).pushNamed("/SavePaintListPage");
-              },
-              child: Text(
-                "  保存  ",
-                style: TextStyle(
-                  color: Colors.deepOrange,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.delete),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text('削除します'),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Cancel'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+        body: Stack(
+          children: <Widget>[
+            RepaintBoundary(
+              key: _globalKey,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    color: Colors.white,
+                    width: size.width,
+                    height: size.height,
                   ),
-                  FlatButton(
-                    child: Text('OK'),
-                    onPressed: () {
-                      strokes.clear();
-                      Navigator.of(context).pop();
-                    },
+                  Align(
+                    alignment: Alignment.center,
+                    child: Image.asset("images/ChristmasBear.png",
+                        fit: BoxFit.contain),
                   ),
+                  Paper(),
                 ],
-              );
-            },
-          );
-        },
-      ),
-    );
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                color: Colors.white,
+
+                // materialTapTargetSize: MaterialTapTargetSize(),
+
+                onPressed: () {
+                  print("押したよ");
+                  _doCapture();
+                },
+                child: Text(
+                  "  保存  ",
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
+            /*Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton(
+                child: Icon(Icons.arrow_circle_down),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('保存する？'),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text('キャンセル'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          FlatButton(
+                            child: Text('OK'),
+                            onPressed: () {
+                              _doCapture();
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),*/
+            Align(
+              alignment: Alignment.topLeft,
+              child: Palette(),
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: SelectWidth(),
+            ),
+          ],
+        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            FloatingActionButton(
+              heroTag: "undo",
+              onPressed: () {
+                if (strokes.canUndo()) strokes.undo();
+              },
+              child: Text("もどす"),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            FloatingActionButton(
+              heroTag: "redo",
+              onPressed: () {
+                if (strokes.canRedo()) strokes.redo();
+              },
+              child: Text("すすむ"),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            FloatingActionButton(
+              heroTag: "save",
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('保存する？'),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('キャンセル'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        FlatButton(
+                          child: Text('OK'),
+                          onPressed: () {
+                            _doCapture();
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Text("保存"),
+              //child: Icon(Icons.arrow_circle_down),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            FloatingActionButton(
+              child: Icon(Icons.delete),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('やりなおす？'),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('キャンセル'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        FlatButton(
+                          child: Text('OK'),
+                          onPressed: () {
+                            strokes.clear();
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ));
   }
 
   /*
@@ -162,8 +221,15 @@ class _PaperScreenState extends State<PaperScreen> {
     setState(() {
       _image = image;
     });
+    /*ChangeNotifierProxyProvider0<SavePaintModel>(
+      create: (context) => SavePaintModel(),
+      update: (context, saveimage) => saveimage..images.add(_image),
+    );*/
+    var savepaint = context.read<SavePaintModel>();
+    savepaint.add(_image);
+    //return Future.value(_image);
     //SavePaintPage(image: _image);
-    //print(_image);
+    print("capture");
     //return null;
   }
 

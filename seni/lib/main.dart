@@ -10,24 +10,34 @@ import 'package:flutter/material.dart';
 //paint機能のため追加
 //import 'package:seni/paint/models/strokes_model.dart';
 import 'package:seni/paint/screens/paint_main.dart';
-//import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 //import 'paint/models/pen_model.dart';
 import 'package:seni/savepaint/savepaintpage.dart';
+import 'package:seni/paint/models/save_paint_model.dart';
+//import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: TopPage(),
-      debugShowCheckedModeBanner: false,
-      routes: <String, WidgetBuilder>{
-        '/top': (BuildContext context) => new TopPage(),
-        '/Main': (BuildContext context) => new MainPage(),
-        '/Paint': (BuildContext context) => new PaperApp(),
-        '/SavePaintListPage': (BuildContext context) => new SavePaintPage(),
-      },
+    //final image = Provider.of<SavePaintModel>(context);
+    //SavePaintModel image;
+    return ChangeNotifierProvider(
+      create: (context) => SavePaintModel(),
+
+      //child: MyApp(),
+
+      child: MaterialApp(
+        home: TopPage(),
+        debugShowCheckedModeBanner: false,
+        routes: <String, WidgetBuilder>{
+          '/top': (BuildContext context) => new TopPage(),
+          '/Main': (BuildContext context) => new MainPage(),
+          '/Paint': (BuildContext context) => new PaperApp(),
+          '/SavePaintListPage': (BuildContext context) => new SavePaintPage(),
+        },
+      ),
     );
   }
 }
@@ -83,6 +93,7 @@ class MainPage extends StatelessWidget {
 
 //appbarの関数化　戻るボタンの遷移場所の変数
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -129,8 +140,8 @@ class MainPage extends StatelessWidget {
                 //ぬりえのアイコン
 
                 SizedBox.fromSize(
-                  size: Size(400, 150), // button width and height
-
+                  //size: Size(400, 150), // button width and height
+                  size: Size(size.width, size.height / 4),
                   //child: ClipOval(
                   child: Material(
                     color: Colors.pink[200], // button color
@@ -165,7 +176,8 @@ class MainPage extends StatelessWidget {
                 ),
 
                 SizedBox.fromSize(
-                  size: Size(400, 150), // button width and height
+                  //size: Size(400, 150), // button width and height
+                  size: Size(size.width, size.height / 4),
                   //child: ClipOval(
                   child: Material(
                     color: Colors.deepOrangeAccent, // button color
@@ -200,7 +212,8 @@ class MainPage extends StatelessWidget {
                   margin: EdgeInsets.all(5),
                 ),
                 SizedBox.fromSize(
-                  size: Size(400, 150), // button width and height
+                  //size: Size(400, 150), // button width and height
+                  size: Size(size.width, size.height / 4),
                   //  child: ClipOval(
                   child: Material(
                     color: Colors.lightBlueAccent, // button color

@@ -20,27 +20,28 @@ class SelectWidth extends StatelessWidget {
             onTap: () {
               pen.width = w;
             },
-            child: width(w, w == pen.width),
+            child: width(w, w == pen.width, pen.color),
           );
         },
       ),
     );
   }
 
-  Widget width(double width, bool selected) {
+  Widget width(double width, bool selected, Color color) {
     return Container(
       height: 50,
-      width: 45,
+      width: 30,
       child: Center(
         child: Container(
-          height: width,
-          width: width,
+          height: width * 2,
+          width: width * 2,
           decoration: BoxDecoration(
-            color: Colors.black,
+            //color: Colors.black,
+            color: color,
             shape: BoxShape.circle,
-            /*border: Border.all(
-              width: selected ? 3 : 1,
-            ),*/
+            border: Border.all(
+              width: selected ? 2 : 0.8,
+            ),
           ),
         ),
       ),
