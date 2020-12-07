@@ -2,11 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:myapp/color.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
+import 'color.dart';
 
 class PhotoPage extends StatelessWidget {
   @override
@@ -20,7 +16,7 @@ class PhotoPage extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
-        '/getphoto':(context) => GetImagePage(),
+        '/getphoto': (context) => GetImagePage(),
         // '/awesomePage': (context) => Findcolorpage(),
       },
     );
@@ -73,14 +69,8 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // RaisedButton(
-                //   onPressed: () => {Navigator.pushNamed(context, '/awesomePage')},
-                //   ),
                 FloatingActionButton(
-                  // onPressed: GetImagePage(),
                   onPressed: () => {Navigator.pushNamed(context, '/getphoto')},
-                  tooltip: 'Pick Image From Gallery',
-                  child: Icon(Icons.photo_library),
                 ),
               ],
             )
@@ -91,27 +81,58 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-//class getImagePage extends State<_HomePage> {
 class GetImagePage extends StatefulWidget {
   @override
   _GetImagePageState createState() => _GetImagePageState();
 }
+//失敗作
+// class _GetImagePageState extends State<GetImagePage> {
+//   File _image;
+//   final picker = ImagePicker();
+
+//   void initState() {
+//     super.initState();
+//     getImageFromGallery();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+    
+//     return Scaffold(
+//       body: Container(
+//           child: FutureBuilder(
+//               future: getImageFromGallery(),
+//                  builder: (context, _image){
+//                    if (_image.connectionState != ConnectionState.done) {
+//                      return CircularProgressIndicator();
+//                    }
+//              }
+//              )),
+//     );
+//   }
+
 
 class _GetImagePageState extends State<GetImagePage> {
   File _image;
   final picker = ImagePicker();
 
+  void initState() {
+    super.initState();
+    getImageFromGallery();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Container(
-        child: FutureBuilder(
-          future: getImageFromGallery(),
-        )
+      body: Center(
+        child: Container(
+          //_image がnullのときの処理
+          child: _image == null ? CircularProgressIndicator() : Image.file(_image)
+        ),
       ),
     );
   }
-
+// 写真を選ぶfuture
   Future getImageFromGallery() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
