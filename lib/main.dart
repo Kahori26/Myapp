@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/top': (BuildContext context) => new TopPage(),
         '/Main': (BuildContext context) => new MainPage(),
         '/photo': (BuildContext context) => new GetImagePage(),
+        '/color': (BuildContext context) => new Findcolorpage(),
       },
     );
   }

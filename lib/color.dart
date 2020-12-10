@@ -1,13 +1,15 @@
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-
+import 'dart:io';
 import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'photo.dart';
 
 const Color _kBackgroundColor = Color(0xffa0a0a0);
 const Color _kSelectionRectangleBackground = Color(0x15000000);
@@ -19,7 +21,9 @@ class Findcolorpage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print("sssss");
+
+    final File image = ModalRoute.of(context).settings.arguments;
+
     return MaterialApp(
       title: 'Image Colors',
       theme: ThemeData(
@@ -27,7 +31,7 @@ class Findcolorpage extends StatelessWidget {
       ),
       home: const ImageColors(
         title: 'Image Colors',
-        image: AssetImage('assets/a.jpg'),
+        image: AssetImage('assets/d.jpg'),
         imageSize: Size(256.0, 250.0),
       ),
     );
@@ -211,17 +215,14 @@ class PaletteSwatches extends StatelessWidget {
           children: swatches,
         ),
         Container(height: 30.0),
-        PaletteSwatch(label: 'Dominant', color: generator.dominantColor?.color),
-        PaletteSwatch(
-            label: 'Light Vibrant', color: generator.lightVibrantColor?.color),
-        PaletteSwatch(label: 'Vibrant', color: generator.vibrantColor?.color),
+        // PaletteSwatch(label: 'Dominant', color: generator.dominantColor?.color),
+        // PaletteSwatch(
+        //     label: 'Light Vibrant', color: generator.lightVibrantColor?.color),
+        // PaletteSwatch(label: 'Vibrant', color: generator.vibrantColor?.color),
         PaletteSwatch(
             label: 'Dark Vibrant', color: generator.darkVibrantColor?.color),
-        PaletteSwatch(
-            label: 'Light Muted', color: generator.lightMutedColor?.color),
-        PaletteSwatch(label: 'Muted', color: generator.mutedColor?.color),
-        PaletteSwatch(
-            label: 'Dark Muted', color: generator.darkMutedColor?.color),
+        // PaletteSwatch(
+        //     label: 'Light Muted', color: generator.lightMutedColor?.color),
       ],
     );
   }
