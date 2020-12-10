@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'photo.dart';
+import 'color.dart';
 
 void main() => runApp(MyApp());
 

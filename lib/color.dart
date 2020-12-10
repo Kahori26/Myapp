@@ -9,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:palette_generator/palette_generator.dart';
 
-import 'photo.dart';
-
 const Color _kBackgroundColor = Color(0xffa0a0a0);
 const Color _kSelectionRectangleBackground = Color(0x15000000);
 const Color _kSelectionRectangleBorder = Color(0x80000000);
@@ -21,6 +19,7 @@ class Findcolorpage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print("sssss");
     return MaterialApp(
       title: 'Image Colors',
       theme: ThemeData(
