@@ -6,7 +6,18 @@ import 'package:seni/paint/camera/color.dart';
 import 'package:seni/paint/models/palette_model.dart';
 import 'package:provider/provider.dart';
 import 'package:seni/main.dart';
+import '../../main.dart';
 
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      routes: <String, WidgetBuilder>{
+        '/top': (BuildContext context) => new TopPage(),
+      },
+    );
+  }
+}
 class PhotoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
