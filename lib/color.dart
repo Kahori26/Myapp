@@ -35,11 +35,43 @@ class Findcolorpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final File image = ModalRoute.of(context).settings.arguments;
-    Uint8List bytes = image.readAsBytesSync() as Uint8List;
+    // Uint8List bytes = image.readAsBytesSync() as Uint8List;
 
     // print(bytes);
     return Scaffold(
-      appBar: AppBar(
+            appBar: AppBar(
+        backgroundColor: Colors.orange[400],
+        centerTitle: true,
+        title: RichText(
+          text: TextSpan(
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 4.0,
+              //fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontFamily: "Pacifico",
+            ),
+            children: [
+              TextSpan(text: '  ぬりえ '),
+              TextSpan(
+                  text: 'de',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    letterSpacing: 4.0,
+                    fontSize: 30,
+                  )),
+              WidgetSpan(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                  child: Icon(Icons.brush_outlined),
+                ),
+              ),
+              TextSpan(text: ' GO'),
+            ],
+          ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.home),
@@ -49,8 +81,8 @@ class Findcolorpage extends StatelessWidget {
       ),
       body: MaterialApp(
         home: ImageColors(
-          title: 'Image Colors',
         // home: Image.memory(bytes),
+        // image: MemoryImage(bytes),
           image: FileImage(image),
           // image: AssetImage("assets/d.jpg"),
           imageSize: Size(256.0, 250.0),
@@ -67,13 +99,12 @@ class ImageColors extends StatefulWidget {
   /// Creates the home page.
   const ImageColors({
     Key key,
-    this.title,
     this.image,
-    this.imageSize,
+    this.imageSize,r
   }) : super(key: key);
 
   /// The title that is shown at the top of the page.
-  final String title;
+  // final String title;
 
   /// This is the image provider that is used to load the colors from.
   final ImageProvider image;
@@ -160,9 +191,6 @@ class _ImageColorsState extends State<ImageColors> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _kBackgroundColor,
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -238,14 +266,14 @@ class PaletteSwatches extends StatelessWidget {
           children: swatches,
         ),
         Container(height: 30.0),
-        PaletteSwatch(label: 'Dominant', color: generator.dominantColor?.color),
+        PaletteSwatch(label: 'メインカラー', color: generator.dominantColor?.color),
         PaletteSwatch(
-            label: 'Light Vibrant', color: generator.lightVibrantColor?.color),
-        PaletteSwatch(label: 'Vibrant', color: generator.vibrantColor?.color),
-        PaletteSwatch(
-            label: 'GET!!!', color: generator.darkVibrantColor?.color),
-        PaletteSwatch(
-            label: 'Light Muted', color: generator.lightMutedColor?.color),
+            label: '明るめカラー', color: generator.lightVibrantColor?.color),
+        PaletteSwatch(label: '鮮やかカラー', color: generator.vibrantColor?.color),
+        // PaletteSwatch(
+        //     label: 'GET!!!', color: generator.darkVibrantColor?.color),
+        // PaletteSwatch(
+        //     label: 'Light Muted', color: generator.lightMutedColor?.color),
       ],
     );
   }
