@@ -83,12 +83,28 @@ class _GetImagePageState extends State<GetImagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD:lib/paint/camera/photo.dart
         body: Center(
           child: Container(
               //_image がnullのときの処理
               child: _image == null
                   ? CircularProgressIndicator()
                   : Image.file(_image)),
+=======
+        body: MaterialApp(
+          home: Center(
+            child: Container(
+                //_image がnullのときの処理
+                child: _image == null
+                    ? CircularProgressIndicator()
+                    : Image.file(_image)),
+          ),
+          initialRoute: '/',
+          routes: {
+            '/color': (context) => Findcolorpage(),
+            // '/color': (context) => GetColorPage(),
+          },
+>>>>>>> origin/master:lib/photo.dart
         ),
         //initialRoute: '/',
 
@@ -104,10 +120,10 @@ class _GetImagePageState extends State<GetImagePage> {
 
 // 写真を選ぶfuture
   Future getImageFromGallery() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
-      _image = File(pickedFile.path);
+      _image = File(pickedImage.path);
     });
   }
 }
