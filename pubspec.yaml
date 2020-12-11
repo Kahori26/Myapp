@@ -1,5 +1,6 @@
-name: Yuna
+name: seni
 description: A new Flutter project.
+#description: Blah blah blah.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -21,22 +22,31 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  camera: ^0.5.8+5
-  image_picker: 0.6.7+14
-  palette_generator: ^0.2.3
-  path_provider: ^1.6.14
-  path: ^1.7.0
   flutter:
     sdk: flutter
+  provider: ^4.1.0
+  palette_generator: ^0.2.3
+  camera: ^0.5.8+5
+  image_picker: 0.6.7+14
+  path_provider: ^1.6.14
+  path: ^1.7.0
+  flutter_launcher_icons: ^0.7.4
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
-
+  intl: ^0.16.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+
+flutter_icons:
+  android: true #Android用にアイコンを作成する場合は true
+  ios: true #iOS用にアイコンを作成する場合は true
+  image_path: 'images/logo.png' #画像のパス（lib/以下なら置き場所は自由）
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -57,6 +67,10 @@ flutter:
     - assets/
     - images/main.png
     - images/logo.png
+    - images/pain1.png
+    - images/pain2.png
+    - images/pain3.png
+    #- images/ChristmasBear.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -4,36 +4,92 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:ui';
+import 'package:provider/provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'photo.dart';
+//import 'photo.dart';
+import 'package:seni/paint/camera/photo.dart';
+import 'package:seni/paint/models/palette_model.dart';
 
-const Color _kBackgroundColor = Color(0xffa0a0a0);
+//const Color _kBackgroundColor = Color(0xffa0a0a0);
+const Color _kBackgroundColor = Color(0xffffffff);
 const Color _kSelectionRectangleBackground = Color(0x15000000);
 const Color _kSelectionRectangleBorder = Color(0x80000000);
 const Color _kPlaceholderColor = Color(0x80404040);
+//const Color _kPlaceholderColor = Color(0xffffffff);
 
 /// The main Application class.
 class Findcolorpage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    File image = ModalRoute.of(context).settings.arguments;
 
-    final File image = ModalRoute.of(context).settings.arguments;
+    return Scaffold(
+      body: ChangeNotifierProvider(
+        create: (context) => PaletteModel(),
+        //builder: (BuildContext context) => StrokesModel(),
 
-    return MaterialApp(
-      title: 'Image Colors',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
+        child: MaterialApp(
+          /*title: 'Image Colors',
+          theme: ThemeData(
+            //primarySwatch: Colors.green,
+            //primarySwatch: Colors.orange[400],
+            primaryColor: Colors.orange[400],
+          ),*/
+          home: const ImageColors(
+            //title: 'Image Colors',
+            image: AssetImage('assets/a.jpg'),
+            imageSize: Size(256.0, 250.0),
+          ),
+        ),
       ),
-      home: const ImageColors(
-        title: 'Image Colors',
-        image: AssetImage('assets/d.jpg'),
-        imageSize: Size(256.0, 250.0),
+      appBar: AppBar(
+        backgroundColor: Colors.orange[400],
+        centerTitle: true,
+        title: RichText(
+          text: TextSpan(
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 4.0,
+              //fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontFamily: "Pacifico",
+            ),
+            children: [
+              TextSpan(text: '  ぬりえ '),
+              TextSpan(
+                  text: 'de',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    letterSpacing: 4.0,
+                    fontSize: 30,
+                  )),
+              WidgetSpan(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                  child: Icon(Icons.brush_outlined),
+                ),
+              ),
+              TextSpan(text: ' GO'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.home),
+            onPressed: () => Navigator.of(context).pushNamed("/top"),
+          )
+        ],
       ),
+
+      //),
     );
   }
 }
@@ -258,6 +314,7 @@ class PaletteSwatch extends StatelessWidget {
     final double colorDistance = math.sqrt(
         math.pow(hslColor.saturation - backgroundAsHsl.saturation, 2.0) +
             math.pow(hslColor.lightness - backgroundAsHsl.lightness, 2.0));
+    final palette = Provider.of<PaletteModel>(context);
 
     Widget swatch = Padding(
       padding: const EdgeInsets.all(2.0),
@@ -269,15 +326,23 @@ class PaletteSwatch extends StatelessWidget {
               strokeWidth: 2.0,
             )
           : Container(
-              decoration: BoxDecoration(
-                  color: color,
-                  border: Border.all(
+              //decoration: BoxDecoration(
+              child: Card(
+                color: color,
+                child: GestureDetector(
+                  onTap: () {
+                    palette.palette.add(color);
+                    print("add palette");
+                  },
+                ),
+                /*border: Border.all(
                     width: 1.0,
                     color: _kPlaceholderColor,
                     style: colorDistance < 0.2
                         ? BorderStyle.solid
                         : BorderStyle.none,
-                  )),
+                  )*/
+              ),
               width: 34.0,
               height: 20.0,
             ),

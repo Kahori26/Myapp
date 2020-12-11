@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'color.dart';
+import 'package:seni/paint/camera/color.dart';
 
 class PhotoPage extends StatelessWidget {
   @override
@@ -83,24 +83,21 @@ class _GetImagePageState extends State<GetImagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: MaterialApp(
-          home: Center(
-            child: Container(
-                //_image がnullのときの処理
-                child: _image == null
-                    ? CircularProgressIndicator()
-                    : Image.file(_image)),
-          ),
-          initialRoute: '/',
-          routes: {
-            '/color': (context) => Findcolorpage(),
-          },
+        body: Center(
+          child: Container(
+              //_image がnullのときの処理
+              child: _image == null
+                  ? CircularProgressIndicator()
+                  : Image.file(_image)),
         ),
+        //initialRoute: '/',
+
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.color_lens_rounded),
           onPressed: () {
             print(_image);
             Navigator.of(context).pushNamed('/color', arguments: _image);
+            //Navigator.of(context).pushNamed("/color");
           },
         ));
   }
