@@ -54,12 +54,15 @@ class Palette extends StatelessWidget {
         itemBuilder: (context, index) {
           //final c = colors[index];
           final c = palette.palette[index];
-          return GestureDetector(
-            onTap: () {
-              pen.color = c;
-            },
-            child: color(c, c == pen.color),
-          );
+          print(c.toString());
+          return c != null
+              ? GestureDetector(
+                  onTap: () {
+                    pen.color = c;
+                  },
+                  child: color(c, c == pen.color),
+                )
+              : Container();
         },
       ),
     );
