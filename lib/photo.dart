@@ -84,6 +84,7 @@ class _GetImagePageState extends State<GetImagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: MaterialApp(
+          debugShowCheckedModeBanner: false,
           home: Center(
             child: Container(
                 //_image がnullのときの処理

@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: TopPage(),
+      debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
         '/top': (BuildContext context) => new TopPage(),
         '/Main': (BuildContext context) => new MainPage(),
