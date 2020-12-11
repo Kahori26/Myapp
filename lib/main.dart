@@ -2,12 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:typed_data';
 import 'dart:ui';
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'photo.dart';
+import 'color.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,46 +20,46 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: TopPage(),
-      routes: <String, WidgetBuilder> {
+      routes: <String, WidgetBuilder>{
         '/top': (BuildContext context) => new TopPage(),
         '/Main': (BuildContext context) => new MainPage(),
+        '/photo': (BuildContext context) => new GetImagePage(),
+        '/color': (BuildContext context) => new Findcolorpage(),
       },
     );
   }
 }
-
 
 class TopPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.amber[300],
-      body:
-      new Stack(
-
-        children:<Widget>[
-          new Image.asset('images/main.png',
+      body: new Stack(
+        children: <Widget>[
+          new Image.asset(
+            'images/main.png',
             // width: 420,
-            fit:BoxFit.cover,
+            fit: BoxFit.cover,
           ),
           new Align(
             alignment: new Alignment(0.0, 1.0),
-
             child: Container(
-              margin: new EdgeInsets.only(bottom:195.0),
+              margin: new EdgeInsets.only(bottom: 195.0),
               child: new SizedBox(
-                width:200,
-                height:50,
-                child:new RaisedButton(
-                  shape:  RoundedRectangleBorder(
+                width: 200,
+                height: 50,
+                child: new RaisedButton(
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   color: Colors.white,
 
                   // materialTapTargetSize: MaterialTapTargetSize(),
-                  onPressed:() => Navigator.of(context).pushNamed("/Main"),
+                  onPressed: () => Navigator.of(context).pushNamed("/Main"),
 
-                  child:Text( "  スタート  ",
+                  child: Text(
+                    "  スタート  ",
                     style: TextStyle(
                       color: Colors.deepOrange,
                       fontWeight: FontWeight.bold,
@@ -72,8 +76,6 @@ class TopPage extends StatelessWidget {
   }
 }
 
-
-
 class MainPage extends StatelessWidget {
   @override
 
@@ -84,8 +86,8 @@ class MainPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.orange[400],
         centerTitle: true,
-        title:  RichText(
-          text:TextSpan(
+        title: RichText(
+          text: TextSpan(
             style: TextStyle(
               color: Colors.white,
               letterSpacing: 4.0,
@@ -95,9 +97,7 @@ class MainPage extends StatelessWidget {
               fontFamily: "Pacifico",
             ),
             children: [
-              TextSpan(
-                  text: '  ぬりえ '
-              ),
+              TextSpan(text: '  ぬりえ '),
               TextSpan(
                   text: 'de',
                   style: TextStyle(
@@ -105,9 +105,7 @@ class MainPage extends StatelessWidget {
                     fontStyle: FontStyle.italic,
                     letterSpacing: 4.0,
                     fontSize: 30,
-                  )
-
-              ),
+                  )),
               WidgetSpan(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 1.0),
@@ -116,42 +114,37 @@ class MainPage extends StatelessWidget {
               ),
               TextSpan(text: ' GO'),
             ],
-
           ),
         ),
       ),
-
-      body:
-      Column(
-
-        children:<Widget>[
+      body: Column(
+        children: <Widget>[
           Container(
             margin: const EdgeInsets.all(5),
-
-            child:Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 //ぬりえのアイコン
 
                 SizedBox.fromSize(
-
                   size: Size(400, 190), // button width and height
 
                   //child: ClipOval(
                   child: Material(
-                    color:  Colors.pink[200],// button color
+                    color: Colors.pink[200], // button color
                     child: InkWell(
                       splashColor: Colors.red, // splash color
-                      onTap:  () => Navigator.of(context).pushNamed("/subpage"), // button pressed
+                      // onTap:  () => Navigator.of(context).pushNamed("/subpage"), // button pressed
                       //遷移先のクラス名（ぬりえへ）
 
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-
                         children: <Widget>[
-                          Icon(Icons.color_lens_outlined,color: Colors.black,size: 80), // icon
-                          Text("ぬりえ",
-                            style:  TextStyle(
+                          Icon(Icons.color_lens_outlined,
+                              color: Colors.black, size: 80), // icon
+                          Text(
+                            "ぬりえ",
+                            style: TextStyle(
                               //fontWeight: FontWeight.bold,
                               color: Colors.black,
                               fontSize: 20,
@@ -174,15 +167,18 @@ class MainPage extends StatelessWidget {
                     color: Colors.deepOrangeAccent, // button color
                     child: InkWell(
                       splashColor: Colors.orange[200], // splash color
-   //                   onTap:  () => Navigator.of(context).pushNamed("/subpage"),
+                      //                   onTap:  () => Navigator.of(context).pushNamed("/subpage"),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(Icons.photo_library,color: Colors.black,size: 80),
-                          Text("かこのぬりえ",
+                          Icon(Icons.photo_library,
+                              color: Colors.black, size: 80),
+                          Text(
+                            "かこのぬりえ",
                             style: TextStyle(
                               fontSize: 20,
-                            ),), // text
+                            ),
+                          ), // text
                         ],
                       ),
                     ),
@@ -205,15 +201,21 @@ class MainPage extends StatelessWidget {
                     color: Colors.lightBlueAccent, // button color
                     child: InkWell(
                       splashColor: Colors.blue, // splash color
-                      onTap:  () => Navigator.of(context).pushNamed("/subpage"), // button pressed
+                      // onTap:  () => Navigator.of(context).pushNamed("/photo"),
+                      onTap: () => Navigator.of(context).pushNamed("/photo"),
+                      // onPressed: getImageFromGallery
+                      // button pressed
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(Icons.photo_camera_outlined,color: Colors.black,size: 80),// icon
-                          Text("いろあつめ",
+                          Icon(Icons.photo_camera_outlined,
+                              color: Colors.black, size: 80), // icon
+                          Text(
+                            "いろあつめ",
                             style: TextStyle(
                               fontSize: 20,
-                            ),), // text
+                            ),
+                          ), // text
                         ],
                       ),
                     ),
@@ -224,14 +226,11 @@ class MainPage extends StatelessWidget {
           ),
         ],
       ),
-
     );
   }
 }
 
-
-void app(){
-
+void app() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -239,13 +238,12 @@ void app(){
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon:Icon(Icons.arrow_back_rounded),
-            onPressed:()=> Navigator.of(context).pushNamed("/main"),
+            icon: Icon(Icons.arrow_back_rounded),
+            onPressed: () => Navigator.of(context).pushNamed("/main"),
           ),
         ],
-
-        title:  RichText(
-          text:TextSpan(
+        title: RichText(
+          text: TextSpan(
             style: TextStyle(
               color: Colors.white,
               letterSpacing: 4.0,
@@ -254,9 +252,7 @@ void app(){
               fontSize: 20,
             ),
             children: [
-              TextSpan(
-                  text: '  ぬりえ '
-              ),
+              TextSpan(text: '  ぬりえ '),
               TextSpan(
                   text: 'de',
                   style: TextStyle(
@@ -264,11 +260,9 @@ void app(){
                     fontStyle: FontStyle.italic,
                     letterSpacing: 4.0,
                     fontSize: 30,
-                  )
-              ),
+                  )),
               TextSpan(text: ' GO'),
             ],
-
           ),
         ),
       ),
