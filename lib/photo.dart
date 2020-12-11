@@ -94,6 +94,7 @@ class _GetImagePageState extends State<GetImagePage> {
           initialRoute: '/',
           routes: {
             '/color': (context) => Findcolorpage(),
+            // '/color': (context) => GetColorPage(),
           },
         ),
         floatingActionButton: FloatingActionButton(
@@ -107,10 +108,10 @@ class _GetImagePageState extends State<GetImagePage> {
 
 // 写真を選ぶfuture
   Future getImageFromGallery() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
-      _image = File(pickedFile.path);
+      _image = File(pickedImage.path);
     });
   }
 }

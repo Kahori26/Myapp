@@ -4,39 +4,62 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:math' as math;
+// import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'photo.dart';
+import 'main.dart';
 
-const Color _kBackgroundColor = Color(0xffa0a0a0);
-const Color _kSelectionRectangleBackground = Color(0x15000000);
-const Color _kSelectionRectangleBorder = Color(0x80000000);
-const Color _kPlaceholderColor = Color(0x80404040);
+const Color _kBackgroundColor = Color(0xFFFFF8E1);
+const Color _kSelectionRectangleBackground = Color(14481663);
+// const Color _kSelectionRectangleBorder = Color(0x80000000);
+// const Color _kPlaceholderColor = Color(0x80404040);
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      routes: <String, WidgetBuilder>{
+        '/top': (BuildContext context) => new TopPage(),
+      },
+    );
+  }
+}
 
 /// The main Application class.
 class Findcolorpage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     final File image = ModalRoute.of(context).settings.arguments;
+    Uint8List bytes = image.readAsBytesSync() as Uint8List;
 
-    return MaterialApp(
-      title: 'Image Colors',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
+    // print(bytes);
+    return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.home),
+            onPressed: () => Navigator.of(context).pushNamed("/top"),
+          )
+        ],
       ),
-      home: const ImageColors(
-        title: 'Image Colors',
-        image: AssetImage('assets/d.jpg'),
-        imageSize: Size(256.0, 250.0),
+      body: MaterialApp(
+        home: ImageColors(
+          title: 'Image Colors',
+        // home: Image.memory(bytes),
+          image: FileImage(image),
+          // image: AssetImage("assets/d.jpg"),
+          imageSize: Size(256.0, 250.0),
+        ),
       ),
     );
   }
 }
+
 
 /// The home page for this example app.
 @immutable
@@ -168,7 +191,7 @@ class _ImageColorsState extends State<ImageColors> {
                           color: _kSelectionRectangleBackground,
                           border: Border.all(
                             width: 1.0,
-                            color: _kSelectionRectangleBorder,
+                            // color: _kSelectionRectangleBorder,
                             style: BorderStyle.solid,
                           )),
                     )),
@@ -203,9 +226,9 @@ class PaletteSwatches extends StatelessWidget {
     if (generator == null || generator.colors.isEmpty) {
       return Container();
     }
-    for (Color color in generator.colors) {
-      swatches.add(PaletteSwatch(color: color));
-    }
+    // for (Color color in generator.colors) {
+    //   swatches.add(PaletteSwatch(color: color));
+    // }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
@@ -215,14 +238,14 @@ class PaletteSwatches extends StatelessWidget {
           children: swatches,
         ),
         Container(height: 30.0),
-        // PaletteSwatch(label: 'Dominant', color: generator.dominantColor?.color),
-        // PaletteSwatch(
-        //     label: 'Light Vibrant', color: generator.lightVibrantColor?.color),
-        // PaletteSwatch(label: 'Vibrant', color: generator.vibrantColor?.color),
+        PaletteSwatch(label: 'Dominant', color: generator.dominantColor?.color),
         PaletteSwatch(
-            label: 'Dark Vibrant', color: generator.darkVibrantColor?.color),
-        // PaletteSwatch(
-        //     label: 'Light Muted', color: generator.lightMutedColor?.color),
+            label: 'Light Vibrant', color: generator.lightVibrantColor?.color),
+        PaletteSwatch(label: 'Vibrant', color: generator.vibrantColor?.color),
+        PaletteSwatch(
+            label: 'GET!!!', color: generator.darkVibrantColor?.color),
+        PaletteSwatch(
+            label: 'Light Muted', color: generator.lightMutedColor?.color),
       ],
     );
   }
@@ -273,7 +296,7 @@ class PaletteSwatch extends StatelessWidget {
                   color: color,
                   border: Border.all(
                     width: 1.0,
-                    color: _kPlaceholderColor,
+                    // color: _kPlaceholderColor,
                     style: colorDistance < 0.2
                         ? BorderStyle.solid
                         : BorderStyle.none,
