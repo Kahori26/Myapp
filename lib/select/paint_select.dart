@@ -50,6 +50,7 @@ class PicSelect extends StatelessWidget {
         ),
       ),
       body: MaterialApp(
+        debugShowCheckedModeBanner: false,
         routes: <String, WidgetBuilder>{
           '/PaintPage': (BuildContext context) => new PaperApp(),
         },
@@ -102,9 +103,10 @@ class PicSelect extends StatelessWidget {
                 //decoration: BoxDecoration(
                 color: Colors.white,
                 splashColor: Colors.red,
-                onPressed: () => Navigator.of(context).pushNamed("/PaintPage"),
+                onPressed: () => Navigator.of(context)
+                    .pushNamed("/PaintPage", arguments: 'images/pain4.png'),
                 child: Image.asset(
-                  'images/pain1.png',
+                  'images/pain4.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -113,9 +115,22 @@ class PicSelect extends StatelessWidget {
                 //decoration: BoxDecoration(
                 color: Colors.white,
                 splashColor: Colors.red,
-                onPressed: () => Navigator.of(context).pushNamed("/PaintPage"),
+                onPressed: () => Navigator.of(context)
+                    .pushNamed("/PaintPage", arguments: 'images/pain5.png'),
                 child: Image.asset(
-                  'images/pain1.png',
+                  'images/pain5.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+              RaisedButton(
+                // alignment: Alignment.center,
+                //decoration: BoxDecoration(
+                color: Colors.white,
+                splashColor: Colors.red,
+                onPressed: () => Navigator.of(context)
+                    .pushNamed("/PaintPage", arguments: 'images/pain6.png'),
+                child: Image.asset(
+                  'images/pain6.png',
                   fit: BoxFit.cover,
                 ),
               ),

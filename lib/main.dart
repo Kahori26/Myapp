@@ -19,6 +19,8 @@ import 'package:seni/select/paint_select.dart';
 import 'package:seni/paint/camera/photo.dart';
 import 'package:seni/paint/camera/color.dart';
 import 'package:seni/savepaint/selectimagepage.dart';
+import 'paint/models/palette_model.dart';
+import 'paint/screens/palette_list_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,9 +29,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //final image = Provider.of<SavePaintModel>(context);
     //SavePaintModel image;
-    return ChangeNotifierProvider(
-      create: (context) => SavePaintModel(),
-
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => SavePaintModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PaletteModel(),
+        ),
+        //child: MyApp(),
+      ],
       //child: MyApp(),
 
       child: MaterialApp(
@@ -45,6 +54,7 @@ class MyApp extends StatelessWidget {
           '/photo': (BuildContext context) => new GetImagePage(),
           '/color': (BuildContext context) => new Findcolorpage(),
           '/SelectImagePage': (BuildContext context) => new SelectImagePage(),
+          '/PaletteList': (BuildContext context) => new PaletteListPage(),
         },
       ),
     );
@@ -138,6 +148,30 @@ class MainPage extends StatelessWidget {
             ],
           ),
         ),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            /*onSelected: (String value) {
+              _popupMenuValue = value;
+            },*/
+            onSelected: (String value) {
+              Navigator.of(context).pushNamed("/PaletteList");
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: "1",
+                child: Text('パレットをみる'),
+              ),
+              /*const PopupMenuItem<String>(
+                value: "2",
+                child: Text('Two'),
+              ),
+              const PopupMenuItem<String>(
+                value: "3",
+                child: Text('Three'),
+              ),*/
+            ],
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

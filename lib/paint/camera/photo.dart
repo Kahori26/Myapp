@@ -6,6 +6,18 @@ import 'package:seni/paint/camera/color.dart';
 import 'package:seni/paint/models/palette_model.dart';
 import 'package:provider/provider.dart';
 import 'package:seni/main.dart';
+import '../../main.dart';
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      routes: <String, WidgetBuilder>{
+        '/top': (BuildContext context) => new TopPage(),
+      },
+    );
+  }
+}
 
 class PhotoPage extends StatelessWidget {
   @override
@@ -25,22 +37,13 @@ class PhotoPage extends StatelessWidget {
               fontFamily: "Pacifico",
             ),
             children: [
-              TextSpan(text: '  ぬりえ '),
-              TextSpan(
-                  text: 'de',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    letterSpacing: 4.0,
-                    fontSize: 30,
-                  )),
+              TextSpan(text: '  いろあつめ '),
               WidgetSpan(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                  child: Icon(Icons.brush_outlined),
+                  child: Icon(Icons.photo_camera_outlined),
                 ),
               ),
-              TextSpan(text: ' GO'),
             ],
           ),
         ),
