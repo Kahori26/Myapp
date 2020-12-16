@@ -347,7 +347,7 @@ class PaletteSwatch extends StatelessWidget {
                                       child: Text('はい'),
                                       onPressed: () {
                                         palette.palette
-                                            .add(color.withAlpha(80));
+                                            .add(color.withAlpha(150));
                                         savecount++;
 
                                         Navigator.of(context).pop();
