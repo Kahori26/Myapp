@@ -6,17 +6,20 @@ import 'dart:async';
 import 'dart:math' as math;
 // import 'dart:convert';
 import 'dart:typed_data';
+import 'package:provider/provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palette_generator/palette_generator.dart';
 import '../../main.dart';
+import 'package:seni/paint/models/palette_model.dart';
 
 const Color _kBackgroundColor = Color(0xFFFFF8E1);
 const Color _kSelectionRectangleBackground = Color(14481663);
-// const Color _kSelectionRectangleBorder = Color(0x80000000);
-// const Color _kPlaceholderColor = Color(0x80404040);
+const Color _kSelectionRectangleBorder = Color(0x80000000);
+const Color _kPlaceholderColor = Color(0x80404040);
+int savecount = 0;
 
 class MyApp extends StatelessWidget {
   @override
@@ -39,7 +42,7 @@ class Findcolorpage extends StatelessWidget {
 
     // print(bytes);
     return Scaffold(
-      appBar: AppBar(     
+      appBar: AppBar(
         backgroundColor: Colors.orange[400],
         centerTitle: true,
         title: RichText(
@@ -53,56 +56,46 @@ class Findcolorpage extends StatelessWidget {
               fontFamily: "Pacifico",
             ),
             children: [
-              TextSpan(text: '  ぬりえ '),
-              TextSpan(
-                  text: 'de',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    letterSpacing: 4.0,
-                    fontSize: 30,
-                  )),
+              TextSpan(text: '  いろあつめ '),
               WidgetSpan(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                  child: Icon(Icons.brush_outlined),
+                  child: Icon(Icons.photo_camera_outlined),
                 ),
               ),
-              TextSpan(text: ' GO'),
             ],
           ),
         ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.home),
-            onPressed: () => Navigator.of(context).pushNamed("/top"),
+            onPressed: () => Navigator.of(context).pushNamed("/Main"),
           )
         ],
       ),
       body: MaterialApp(
+        //home: ImageColors(
         debugShowCheckedModeBanner: false,
-        home: ImageColors(
-        // home: Image.memory(bytes),
-        // image: MemoryImage(bytes),
-          image: FileImage(image),
-          // image: AssetImage("assets/d.jpg"),
-          imageSize: Size(256.0, 250.0),
+        home: ChangeNotifierProvider(
+          create: (context) => PaletteModel(),
+          // home: Image.memory(bytes),
+          // image: MemoryImage(bytes),
+          child: ImageColors(
+            image: FileImage(image),
+            // image: AssetImage("assets/d.jpg"),
+            imageSize: Size(256.0, 250.0),
+          ),
         ),
       ),
     );
   }
 }
 
-
 /// The home page for this example app.
 @immutable
 class ImageColors extends StatefulWidget {
   /// Creates the home page.
-  const ImageColors({
-    Key key,
-    this.image,
-    this.imageSize,r
-  }) : super(key: key);
+  const ImageColors({Key key, this.image, this.imageSize, r}) : super(key: key);
 
   /// The title that is shown at the top of the page.
   // final String title;
@@ -269,8 +262,8 @@ class PaletteSwatches extends StatelessWidget {
         Container(height: 30.0),
         PaletteSwatch(label: 'メインカラー', color: generator.dominantColor?.color),
         PaletteSwatch(
-            label: '明るめカラー', color: generator.lightVibrantColor?.color),
-        PaletteSwatch(label: '鮮やかカラー', color: generator.vibrantColor?.color),
+            label: 'あかるいいろ', color: generator.lightVibrantColor?.color),
+        PaletteSwatch(label: 'あざやかないろ', color: generator.vibrantColor?.color),
         // PaletteSwatch(
         //     label: 'GET!!!', color: generator.darkVibrantColor?.color),
         // PaletteSwatch(
@@ -310,39 +303,105 @@ class PaletteSwatch extends StatelessWidget {
     final double colorDistance = math.sqrt(
         math.pow(hslColor.saturation - backgroundAsHsl.saturation, 2.0) +
             math.pow(hslColor.lightness - backgroundAsHsl.lightness, 2.0));
-
+    final palette = Provider.of<PaletteModel>(context);
+    savecount = 0;
     Widget swatch = Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(5.0),
       child: color == null
           ? const Placeholder(
-              fallbackWidth: 34.0,
-              fallbackHeight: 20.0,
+              fallbackWidth: 60.0,
+              fallbackHeight: 30.0,
               color: Color(0xff404040),
               strokeWidth: 2.0,
             )
           : Container(
-              decoration: BoxDecoration(
-                  color: color,
-                  border: Border.all(
-                    width: 1.0,
-                    // color: _kPlaceholderColor,
-                    style: colorDistance < 0.2
-                        ? BorderStyle.solid
-                        : BorderStyle.none,
+              child: SizedBox(
+                  width: 60.0,
+                  height: 30.0,
+                  child: RaisedButton(
+                    color: color,
+                    shape: const OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: _kPlaceholderColor,
+                      ),
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        //barrierColor: color,
+                        context: context,
+                        builder: (context) {
+                          return savecount < 2
+                              ? AlertDialog(
+                                  backgroundColor: color,
+                                  title: Text('このいろをあつめる？'),
+                                  content: Text(
+                                      'あと' + '${2 - savecount}' + 'つあつめられるよ'),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('いいえ'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text('はい'),
+                                      onPressed: () {
+                                        palette.palette
+                                            .add(color.withAlpha(150));
+                                        savecount++;
+
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                )
+                              : AlertDialog(
+                                  title: Text('もう保存できないよ'),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                          /*return AlertDialog(
+                            backgroundColor: color,
+                            title: Text('この色を保存する？'),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('キャンセル'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              FlatButton(
+                                child: Text('OK'),
+                                onPressed: () {
+                                  palette.palette.add(color.withAlpha(150));
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );*/
+                        },
+                      );
+
+                      //print(palette.palette.last.toString());
+                    },
                   )),
-              width: 34.0,
-              height: 20.0,
             ),
     );
 
     if (label != null) {
       swatch = ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 130.0, minWidth: 130.0),
+        constraints: const BoxConstraints(maxWidth: 200.0, minWidth: 130.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             swatch,
-            Container(width: 5.0),
+            Container(width: 15.0),
             Text(label),
           ],
         ),

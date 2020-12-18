@@ -12,4 +12,9 @@ class PaletteModel extends ChangeNotifier {
     _palette.add(color);
     notifyListeners();
   }
+
+  void remove(int index) {
+    _palette.removeAt(index);
+    notifyListeners();
+  }
 }

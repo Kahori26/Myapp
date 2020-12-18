@@ -51,9 +51,13 @@ class SelectImagePage extends StatelessWidget {
           )
         ],
       ),
-      body: Container(
-        //color: Colors.yellow,
-        child: ViewSelectImage(image: _image.image),
+
+      body: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Container(
+          //color: Colors.yellow,
+          child: ViewSelectImage(image: _image.image),
+        ),
       ),
       //savepaint.add(_image)
     );

@@ -19,6 +19,11 @@ class SavePaintModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void remove(int index) {
+    _image.removeAt(index);
+    notifyListeners();
+  }
+
 /*
   void update(Image image) {
     _image.last.add(image);

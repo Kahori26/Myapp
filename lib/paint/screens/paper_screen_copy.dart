@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seni/paint/components/selectwidth.dart';
 import 'package:provider/provider.dart';
 import 'package:seni/paint/components/palette.dart';
 import 'package:seni/paint/components/paper.dart';
 import 'package:seni/paint/models/strokes_model.dart';
+import '../models/palette_model.dart';
+import '../models/pen_model.dart';
 //import 'paint_main.dart';
 //import 'package:seni/savepaint/savepaintpage.dart';
 
@@ -22,16 +24,131 @@ import 'package:seni/savepaint/savepaintpage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-class PaperScreen extends StatefulWidget {
-  final String name;
-  PaperScreen({Key key, this.name}) : super(key: key);
+class PaperApp1 extends StatelessWidget {
   @override
-  _PaperScreenState createState() => new _PaperScreenState();
+  Widget build(BuildContext context) {
+    //final image = Provider.of<SavePaintModel>(context);
+    //SavePaintModel image;
+    //Image image;
+    //image = null;
+    final Image image = ModalRoute.of(context).settings.arguments;
+    return Scaffold(
+      /*appBar: AppBar(
+        backgroundColor: Colors.orange[400],
+        centerTitle: true,
+        //leading: Icon(Icons.arrow_back_ios),
+        title: RichText(
+          text: TextSpan(
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 4.0,
+              //fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontFamily: "Pacifico",
+            ),
+            children: [
+              TextSpan(text: '  ぬりえ '),
+              WidgetSpan(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                  child: Icon(Icons.brush_outlined),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),*/
+      appBar: AppBar(
+        backgroundColor: Colors.orange[400],
+        centerTitle: true,
+        title: RichText(
+          text: TextSpan(
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 4.0,
+              //fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontFamily: "Pacifico",
+            ),
+            children: [
+              TextSpan(text: '  ぬりえ '),
+              TextSpan(
+                  text: 'de',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    letterSpacing: 4.0,
+                    fontSize: 30,
+                  )),
+              WidgetSpan(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                  child: Icon(Icons.brush_outlined),
+                ),
+              ),
+              TextSpan(text: ' GO'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.home),
+            onPressed: () => Navigator.of(context).pushNamed("/Main"),
+          )
+        ],
+      ),
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => PenModel(),
+            //builder: (BuildContext context) => PenModel(),
+          ),
+          /*ChangeNotifierProvider(
+          create: (context) => PenWidthModel(),
+          //builder: (BuildContext context) => PenModel(),
+        ),*/
+          ChangeNotifierProvider(
+            create: (context) => StrokesModel(),
+            //builder: (BuildContext context) => StrokesModel(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => SavePaintModel(),
+            //builder: (BuildContext context) => StrokesModel(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => PaletteModel(),
+            //builder: (BuildContext context) => StrokesModel(),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+
+          home: SafeArea(
+            child: PaperScreen1(continue_paint: image),
+          ),
+          //home: PaperScreen(),
+
+          routes: <String, WidgetBuilder>{
+            '/SavePaintListPage': (BuildContext context) => new SavePaintPage(),
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class PaperScreen1 extends StatefulWidget {
+  final Image continue_paint;
+  PaperScreen1({Key key, this.continue_paint}) : super(key: key);
+  @override
+  _PaperScreenState1 createState() => new _PaperScreenState1();
 }
 
 //class PaperScreen extends StatelessWidget {
 
-class _PaperScreenState extends State<PaperScreen> {
+class _PaperScreenState1 extends State<PaperScreen1> {
   // グローバルキー
   GlobalKey _globalKey = GlobalKey();
   // イメージ
@@ -64,7 +181,8 @@ class _PaperScreenState extends State<PaperScreen> {
                   alignment: Alignment.center,
                   //child: Image.asset("images/ChristmasBear.png",
                   //   fit: BoxFit.contain),
-                  child: Image.asset(widget.name, fit: BoxFit.contain),
+                  //child: Image.asset(widget.name, fit: BoxFit.contain),
+                  child: widget.continue_paint,
                 ),
                 Paper(),
               ],
@@ -284,3 +402,4 @@ class _PaperScreenState extends State<PaperScreen> {
     return null;
   }
 }
+*/

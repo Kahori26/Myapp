@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 //import 'package:seni/paint/models/strokes_model.dart';
 //import 'package:seni/paint/screens/paper_screen.dart';
 import 'package:provider/provider.dart';
@@ -41,11 +42,11 @@ class _SavePaintPageState extends State<SavePaintPage> {
               fontFamily: "Pacifico",
             ),
             children: [
-              TextSpan(text: '  ぬりえ保存一覧 '),
+              TextSpan(text: '  ほぞんリスト '),
               WidgetSpan(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                  child: Icon(Icons.brush_outlined),
+                  child: Icon(Icons.photo_library),
                 ),
               ),
             ],
@@ -65,7 +66,7 @@ class _SavePaintPageState extends State<SavePaintPage> {
         
       ),*/
       body: Container(
-        child: _PaintList(),
+        child: PaintList(),
       ),
 
       //savepaint.add(_image)
@@ -73,10 +74,17 @@ class _SavePaintPageState extends State<SavePaintPage> {
   }
 }
 
-class _PaintList extends StatelessWidget {
+class PaintList extends StatefulWidget {
+  @override
+  _PaintList createState() => _PaintList();
+}
+
+//class _PaintList extends StatelessWidget {
+class _PaintList extends State<PaintList> {
   @override
   Widget build(BuildContext context) {
-    var saveimage = context.watch<SavePaintModel>();
+    //var saveimage = context.watch<SavePaintModel>();
+    var saveimage = Provider.of<SavePaintModel>(context);
     final Size size = MediaQuery.of(context).size;
     //var index;
     //var formatter = new DateFormat('yyyy/MM/dd(E) HH:mm', "ja_JP");
@@ -96,16 +104,51 @@ class _PaintList extends StatelessWidget {
             //Row(
             //children: <Widget>[
             ListTile(
+              leading: Container(
+                child: saveimage.images[index] != null
+                    ? saveimage.images[index].image
+                    : Container(),
+              ),
               title: Text(
                 DateFormat.yMMMd('ja').format(saveimage.images[index].time),
               ),
+              subtitle: Text(saveimage.images[index].name),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('データをけす'),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text('やめる'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          FlatButton(
+                            child: Text('はい'),
+                            onPressed: () {
+                              saveimage.remove(index);
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+
               onTap: () => Navigator.of(context).pushNamed("/SelectImagePage",
                   arguments: saveimage.images[index]),
               //title: Text("日付"),
             ),
-            Container(
+            /*Container(
               child: Text(saveimage.images[index].name),
-            ),
+            ),*/
             //Container(
             // child: Card(
             /*child: Container(

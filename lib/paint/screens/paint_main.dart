@@ -79,7 +79,7 @@ class PaperApp extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.home),
-            onPressed: () => Navigator.of(context).pushNamed("/top"),
+            onPressed: () => Navigator.of(context).pushNamed("/Main"),
           )
         ],
       ),
