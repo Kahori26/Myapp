@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'main.dart';
+import '../../main.dart';
 
 const Color _kBackgroundColor = Color(0xFFFFF8E1);
 const Color _kSelectionRectangleBackground = Color(14481663);
@@ -39,8 +39,7 @@ class Findcolorpage extends StatelessWidget {
 
     // print(bytes);
     return Scaffold(
-      appBar: AppBar(
-        
+      appBar: AppBar(     
         backgroundColor: Colors.orange[400],
         centerTitle: true,
         title: RichText(

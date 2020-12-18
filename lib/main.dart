@@ -2,31 +2,51 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:typed_data';
 import 'dart:ui';
-import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'photo.dart';
-import 'color.dart';
+//paint機能のため追加
+//import 'package:seni/paint/models/strokes_model.dart';
+import 'package:seni/paint/screens/paint_main.dart';
+import 'package:provider/provider.dart';
+//import 'paint/models/pen_model.dart';
+import 'package:seni/savepaint/savepaintpage.dart';
+import 'package:seni/paint/models/save_paint_model.dart';
+//import 'package:provider/provider.dart';
+import 'package:seni/select/paint_select.dart';
+import 'package:seni/paint/camera/photo.dart';
+import 'package:seni/paint/camera/color.dart';
+import 'package:seni/savepaint/selectimagepage.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: TopPage(),
-      debugShowCheckedModeBanner: false,
-      routes: <String, WidgetBuilder>{
-        '/top': (BuildContext context) => new TopPage(),
-        '/Main': (BuildContext context) => new MainPage(),
-        '/photo': (BuildContext context) => new GetImagePage(),
-        '/color': (BuildContext context) => new Findcolorpage(),
-      },
+    //final image = Provider.of<SavePaintModel>(context);
+    //SavePaintModel image;
+    return ChangeNotifierProvider(
+      create: (context) => SavePaintModel(),
+
+      //child: MyApp(),
+
+      child: MaterialApp(
+        home: TopPage(),
+        debugShowCheckedModeBanner: false,
+        routes: <String, WidgetBuilder>{
+          '/top': (BuildContext context) => new TopPage(),
+          '/Main': (BuildContext context) => new MainPage(),
+          '/Paint': (BuildContext context) => new PaperApp(),
+          '/SavePaintListPage': (BuildContext context) => new SavePaintPage(),
+          '/PicSelect': (BuildContext context) => new PicSelect(),
+          '/PaintPage': (BuildContext context) => new PaperApp(),
+          '/photo': (BuildContext context) => new GetImagePage(),
+          '/color': (BuildContext context) => new Findcolorpage(),
+          '/SelectImagePage': (BuildContext context) => new SelectImagePage(),
+        },
+      ),
     );
   }
 }
@@ -82,6 +102,7 @@ class MainPage extends StatelessWidget {
 
 //appbarの関数化　戻るボタンの遷移場所の変数
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -119,7 +140,11 @@ class MainPage extends StatelessWidget {
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(5),
+          ),
           Container(
             margin: const EdgeInsets.all(5),
             child: Column(
@@ -128,14 +153,17 @@ class MainPage extends StatelessWidget {
                 //ぬりえのアイコン
 
                 SizedBox.fromSize(
-                  size: Size(400, 190), // button width and height
-
+                  //size: Size(400, 150), // button width and height
+                  size: Size(size.width, size.height / 4),
                   //child: ClipOval(
                   child: Material(
                     color: Colors.pink[200], // button color
                     child: InkWell(
                       splashColor: Colors.red, // splash color
-                      // onTap:  () => Navigator.of(context).pushNamed("/subpage"), // button pressed
+                      //onTap: () => Navigator.of(context)
+                      //    .pushNamed("/subpage"), // button pressed
+                      onTap: () =>
+                          Navigator.of(context).pushNamed("/PicSelect"),
                       //遷移先のクラス名（ぬりえへ）
 
                       child: Column(
@@ -157,18 +185,27 @@ class MainPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
+                /*Container(
                   margin: EdgeInsets.all(5),
-                ),
-
+                ),*/
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(5),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
                 SizedBox.fromSize(
-                  size: Size(400, 190), // button width and height
+                  //size: Size(400, 150), // button width and height
+                  size: Size(size.width, size.height / 4),
                   //child: ClipOval(
                   child: Material(
                     color: Colors.deepOrangeAccent, // button color
                     child: InkWell(
                       splashColor: Colors.orange[200], // splash color
-                      //                   onTap:  () => Navigator.of(context).pushNamed("/subpage"),
+                      onTap: () =>
+                          Navigator.of(context).pushNamed("/SavePaintListPage"),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -186,26 +223,32 @@ class MainPage extends StatelessWidget {
                     // ),
                   ),
                 ),
+              ],
+            ),
+          ),
 /*
                     Container(
                       margin: EdgeInsets.all(40),
                     ),
 
  */
-                Container(
+          /*Container(
                   margin: EdgeInsets.all(5),
-                ),
+                ),*/
+          Container(
+            margin: const EdgeInsets.all(5),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
                 SizedBox.fromSize(
-                  size: Size(400, 190), // button width and height
+                  //size: Size(400, 150), // button width and height
+                  size: Size(size.width, size.height / 4),
                   //  child: ClipOval(
                   child: Material(
                     color: Colors.lightBlueAccent, // button color
                     child: InkWell(
                       splashColor: Colors.blue, // splash color
-                      // onTap:  () => Navigator.of(context).pushNamed("/photo"),
                       onTap: () => Navigator.of(context).pushNamed("/photo"),
-                      // onPressed: getImageFromGallery
-                      // button pressed
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -224,6 +267,9 @@ class MainPage extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          Container(
+            margin: EdgeInsets.all(5),
           ),
         ],
       ),

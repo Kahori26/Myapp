@@ -1,4 +1,4 @@
-# myapp
+# seni
 
 A new Flutter project.
 
